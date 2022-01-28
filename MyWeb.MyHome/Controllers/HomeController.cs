@@ -23,7 +23,7 @@ namespace MyWeb.MyHome.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult TicketList()
         {
             return View();
         }
