@@ -8,4 +8,4 @@
 - https://github.com/adminmart/Adminmart-lite
 
 강의 [BluePope]
-https://www.youtube.com/watch?v=lxUcvtPxih4&list=PLBwij41qsAy63jv3glNOZQg8eNnau8Zf5&index=10
+- https://www.youtube.com/watch?v=lxUcvtPxih4&list=PLBwij41qsAy63jv3glNOZQg8eNnau8Zf5&index=10
