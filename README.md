@@ -6,3 +6,6 @@
 
 사용한 레이아웃
 - https://github.com/adminmart/Adminmart-lite
+
+강의 [BluePope]
+https://www.youtube.com/watch?v=lxUcvtPxih4&list=PLBwij41qsAy63jv3glNOZQg8eNnau8Zf5&index=10
