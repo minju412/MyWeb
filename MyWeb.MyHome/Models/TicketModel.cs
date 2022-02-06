@@ -14,37 +14,23 @@ namespace MyWeb.MyHome.Models
 
         public string Status { get; set; }
 
-        public static List<TicketModel> GetList(string status)
+        public static List<TicketModel> GetList(string _status)
         {
-            using (var conn = new MySqlConnection("Server=localhost;Database=myweb;Uid=root;Pwd=maria;"))
-            //using (var conn = new MySqlConnection("Server=127.0.0.1;Port=3306;Database=myweb;Uid=root;Pwd=maria;"))
+            //using (var conn = new MySqlConnection("Server=localhost;Database=myweb;Uid=root;Pwd=maria;"))
+            using (var conn = new MySqlConnection("Server=127.0.0.1;Port=3306;Database=myweb;Uid=root;Pwd=maria;"))
             {
                 conn.Open();
 
-                string sql = @"
-                SELECT
-                	A.ticket_id
-                	,A.title
-                	,A.status
-                FROM
-                	t_ticket A
-                WHERE
-                	A.status = @status
-                ";
+                //string sql = "SELECT A.ticket_id,A.title,A.status FROM t_ticket A WHERE A.status=@status";
+                string sql = "SELECT * FROM t_ticket ORDER BY ticket_id ASC";
 
-                return Dapper.SqlMapper.Query<TicketModel>(conn, sql, new { status = status }).ToList();
+                return Dapper.SqlMapper.Query<TicketModel>(conn, sql, new { status = _status }).ToList();
             }
         }
 
         public int Update()
         {
-            string sql = @"
-                UPDATE t_ticket
-                SET
-	                title = @title
-                WHERE
-	                ticket_id = @ticket_id
-                ";
+            string sql = "UPDATE t_ticket SET title = @title WHERE ticket_id = @ticket_id";
 
             using (var conn = new MySqlConnection("Server=127.0.0.1;Port=3306;Database=myweb;Uid=root;Pwd=maria;"))
             {
