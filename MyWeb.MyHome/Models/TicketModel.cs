@@ -1,8 +1,5 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using MyWeb.Lib.DataBase;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MyWeb.MyHome.Models
 {
@@ -16,15 +13,11 @@ namespace MyWeb.MyHome.Models
 
         public static List<TicketModel> GetList(string _status)
         {
-            //using (var conn = new MySqlConnection("Server=localhost;Database=myweb;Uid=root;Pwd=maria;"))
-            using (var conn = new MySqlConnection("Server=127.0.0.1;Port=3306;Database=myweb;Uid=root;Pwd=maria;"))
+            using (var db = new MySqlDapperHelper())
             {
-                conn.Open();
-
-                //string sql = "SELECT A.ticket_id,A.title,A.status FROM t_ticket A WHERE A.status=@status";
                 string sql = "SELECT * FROM t_ticket ORDER BY ticket_id ASC";
 
-                return Dapper.SqlMapper.Query<TicketModel>(conn, sql, new { status = _status }).ToList();
+                return db.Query<TicketModel>(sql, new { status = _status });
             }
         }
 
@@ -32,11 +25,31 @@ namespace MyWeb.MyHome.Models
         {
             string sql = "UPDATE t_ticket SET title = @title WHERE ticket_id = @ticket_id";
 
-            using (var conn = new MySqlConnection("Server=127.0.0.1;Port=3306;Database=myweb;Uid=root;Pwd=maria;"))
+            using (var db = new MySqlDapperHelper())
             {
-                conn.Open();
 
-                return Dapper.SqlMapper.Execute(conn, sql, this);
+                return db.Execute(sql, this);
+
+
+                //    db.BeginTransaction();
+                //    try
+                //    {
+                //        int r = 0;
+                //        string sql = "UPDATE t_ticket SET title = @title WHERE ticket_id = @ticket_id";
+                //        r += db.Execute(sql, this);
+
+                //        //sql = "UPDATE t_ticket SET title = @title WHERE ticket_id = @ticket_id"; //다른 쿼리
+                //        //r += db.Execute(sql, this);
+
+                //        db.Commit();
+
+                //        return r;
+                //    }
+                //    catch(Exception ex)
+                //    {
+                //        db.Rollback();
+                //        throw ex;
+                //    }
             }
         }
     }
