@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MySql.Data.MySqlClient;
 using MyWeb.MyHome.Models;
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
-using System.Linq;
+using System.Security.Claims;
 
 namespace MyWeb.MyHome.Controllers
 {
@@ -36,6 +33,30 @@ namespace MyWeb.MyHome.Controllers
             model.Update();
 
             return Redirect("/home/ticketList"); //Json(new { msg = "Ok" });
+        }
+
+        public IActionResult BoardList(string search)
+        {
+            return View(BoardModel.GetList(search));
+        }
+
+        public IActionResult BoardWrite()
+        {
+            return View();
+        }
+
+        public IActionResult BoardWrite_Input(string title, string contents)
+        {
+            var model = new BoardModel();
+
+            model.Title = title;
+            model.Contents = contents;
+            model.Reg_User = Convert.ToUInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            model.Reg_Username = User.Identity.Name;
+
+            model.Insert();
+
+            return Redirect("/home/boardlist");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
