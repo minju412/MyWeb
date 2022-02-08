@@ -1,13 +1,10 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using MyWeb.MyHome.Services;
 
 namespace MyWeb.MyHome
 {
@@ -24,6 +21,20 @@ namespace MyWeb.MyHome
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            // 쿠키 추가
+            services.AddAuthentication(options =>
+            {
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie(options =>
+            {
+                options.LoginPath = "/login";
+                options.EventsType = options.EventsType = typeof(CustomCookieAuthenticationEvents);
+            });
+
+            services.AddScoped<CustomCookieAuthenticationEvents>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +55,7 @@ namespace MyWeb.MyHome
 
             app.UseRouting();
 
+            app.UseAuthentication(); //인증 사용 (UseAuthorization보다 먼저 위치)
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
