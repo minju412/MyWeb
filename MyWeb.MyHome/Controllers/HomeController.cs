@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using MyWeb.MyHome.Models;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Security.Claims;
 
 namespace MyWeb.MyHome.Controllers
@@ -29,11 +30,22 @@ namespace MyWeb.MyHome.Controllers
             return View(TicketModel.GetList(status));
         }
 
-        public IActionResult TicketChange([FromForm]TicketModel model)
+        // // 1. 순수 js & 2. JQuery Ajax 이용
+        //public IActionResult TicketChange(TicketModel model)
+        //{
+        //    model.Update();
+
+        //    //return Redirect("/home/ticketList"); // 1
+        //    //return Json(new { msg = "Ok" }); // 1 & 2
+        //    return Json(new { msg = model.Title }); // 1 & 2
+        //}
+
+        // 3. Axios
+        public IActionResult TicketChange([FromBody]TicketModel model)
         {
             model.Update();
 
-            return Redirect("/home/ticketList"); //Json(new { msg = "Ok" });
+            return Json(new { msg = model.Title });
         }
 
         public IActionResult BoardList(string search)
