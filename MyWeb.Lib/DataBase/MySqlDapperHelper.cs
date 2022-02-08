@@ -17,6 +17,9 @@ namespace MyWeb.Lib.DataBase
 
         public void BeginTransaction()
         {
+            if (_conn.State != System.Data.ConnectionState.Open)
+                _conn.Open();
+
             _trans = _conn.BeginTransaction();
         }
 
@@ -34,15 +37,18 @@ namespace MyWeb.Lib.DataBase
 
         public List<T> Query<T>(string sql, object param)
         {
-            //return Dapper.SqlMapper.Query<T>(_conn, sql, param).ToList();
             return Dapper.SqlMapper.Query<T>(_conn, sql, param, _trans).ToList();
+        }
+        public T QuerySingle<T>(string sql, object param)
+        {
+            return Dapper.SqlMapper.QuerySingleOrDefault<T>(_conn, sql, param, _trans);
         }
 
         public int Execute(string sql, object param)
         {
-            //return Dapper.SqlMapper.Execute(_conn, sql, param);
             return Dapper.SqlMapper.Execute(_conn, sql, param, _trans);
         }
+
 
         #region Dispose 관련
         private bool disposedValue;
@@ -70,11 +76,11 @@ namespace MyWeb.Lib.DataBase
         }
 
         // // TODO: 비관리형 리소스를 해제하는 코드가 'Dispose(bool disposing)'에 포함된 경우에만 종료자를 재정의합니다.
-        ~MySqlDapperHelper()
-        {
-            // 이 코드를 변경하지 마세요. 'Dispose(bool disposing)' 메서드에 정리 코드를 입력합니다.
-            Dispose(disposing: false);
-        }
+        // ~MySqlDapperHelper()
+        // {
+        //     // 이 코드를 변경하지 마세요. 'Dispose(bool disposing)' 메서드에 정리 코드를 입력합니다.
+        //     Dispose(disposing: false);
+        // }
 
         public void Dispose()
         {

@@ -26,23 +26,13 @@ namespace MyWeb.MyHome.Models
             }
         }
 
-        //public BoardModel Get(uint idx)
-        //{
-        //    using (var db = new MySqlDapperHelper())
-        //    {
-        //        string sql = "SELECT * FROM t_board B WHERE B.idx = @idx";
-
-        //        return db.QuerySingle<BoardModel>(sql, new { idx = idx });
-        //    }
-        //}
-
-        public List<BoardModel> Get(uint idx)
+        public static BoardModel Get(uint idx)
         {
             using (var db = new MySqlDapperHelper())
             {
-                string sql = "SELECT idx,title,contents,reg_user,reg_username,reg_date,view_Cnt,status_flag FROM t_board B WHERE B.idx = @idx";
+                string sql = "SELECT * FROM t_board B WHERE B.idx = @idx";
 
-                return db.Query<BoardModel>(sql, new { idx = idx });
+                return db.QuerySingle<BoardModel>(sql, new { idx = idx });
             }
         }
 
