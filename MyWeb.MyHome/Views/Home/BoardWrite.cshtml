@@ -1,4 +1,7 @@
-﻿<div class="row">
+﻿<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+<div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
@@ -28,8 +31,17 @@
             </div>
         </div>
     </div>
-</div><script>
+</div>
+<script>
+    $("#form1 textarea[name=contents]").summernote();
+
     $("#btn1").click(function () {
+
+        var code = $("#form1 textarea[name=contents]").summernote("code");
+
+        $("#form1 textarea[name=contents]").val(code);
+
+
         $("#form1").submit();
     });
 </script>
