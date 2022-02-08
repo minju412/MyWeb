@@ -13,13 +13,14 @@ namespace MyWeb.MyHome.Models
         public string Reg_Username { get; set; }
         public DateTime Reg_Date { get; set; }
         public uint View_Cnt { get; set; }
+        public short Status_Flag { get; set; }
 
         public static List<BoardModel> GetList(string search)
         {
             using (var db = new MySqlDapperHelper())
             {
                 //string sql = "SELECT * FROM t_board ORDER BY idx ASC";
-                string sql = "SELECT * FROM t_board B WHERE B.title LIKE CONCAT ('%',IFNULL(@search,''), '%') ORDER BY B.idx ASC";
+                string sql = "SELECT idx,title,contents,reg_user,reg_username,reg_date,view_Cnt,status_flag FROM t_board B WHERE B.title LIKE CONCAT ('%',IFNULL(@search,''), '%') ORDER BY B.idx ASC";
 
                 return db.Query<BoardModel>(sql, new { search = search });
             }
@@ -39,7 +40,7 @@ namespace MyWeb.MyHome.Models
         {
             using (var db = new MySqlDapperHelper())
             {
-                string sql = "SELECT * FROM t_board B WHERE B.idx = @idx";
+                string sql = "SELECT idx,title,contents,reg_user,reg_username,reg_date,view_Cnt,status_flag FROM t_board B WHERE B.idx = @idx";
 
                 return db.Query<BoardModel>(sql, new { idx = idx });
             }
@@ -65,7 +66,7 @@ namespace MyWeb.MyHome.Models
         {
             CheckContents();
 
-            string sql = "INSERT INTO t_board (title,contents,reg_user,reg_username,reg_date,view_Cnt) VALUES (@title,@contents,@reg_user,@reg_username,now(),0)";
+            string sql = "INSERT INTO t_board (title,contents,reg_user,reg_username,reg_date,view_Cnt,status_flag) VALUES (@title,@contents,@reg_user,@reg_username,now(),0,0)";
 
             using (var db = new MySqlDapperHelper())
             {
