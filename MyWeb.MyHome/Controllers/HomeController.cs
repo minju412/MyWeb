@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MyWeb.MyHome.Models;
 using System;
@@ -40,18 +41,21 @@ namespace MyWeb.MyHome.Controllers
             return View(BoardModel.GetList(search));
         }
 
+        [Authorize]
         public IActionResult BoardWrite()
         {
             return View();
         }
 
+        //[Authorize(Roles = "Admin")]
+        [Authorize]
         public IActionResult BoardWrite_Input(string title, string contents)
         {
             var model = new BoardModel();
 
             model.Title = title;
             model.Contents = contents;
-            model.Reg_User = Convert.ToUInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            model.Reg_User = Convert.ToUInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)); //2
             model.Reg_Username = User.Identity.Name;
 
             model.Insert();
